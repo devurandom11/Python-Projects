@@ -11,6 +11,19 @@ def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
 
+def set_logging():
+    parser = argparse.ArgumentParser(description="Port Scanner")
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Increase output verbosity"
+    )
+    args = parser.parse_args()
+
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
+    else:
+        logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+
 def print_banner():
     ascii_banner = pyfiglet.figlet_format("M-Map")
     print(f"\n{ascii_banner}")
@@ -22,22 +35,13 @@ def print_start(target):
     print("-" * 50)
 
 
-def validate_ip(ip):
-    try:
-        socket.inet_aton(ip)
-        return True
-    except socket.error:
-        return False
-
-
-def validate_ports(ports):
-    try:
-        start_port, end_port = map(int, ports.split("-"))
-        return (
-            0 <= start_port < 65536 and 0 <= end_port < 65536 and start_port < end_port
-        )
-    except ValueError:
-        return False
+def print_results(results):
+    print("-" * 50)
+    print(f"Scanning Finished: {datetime.now()}")
+    if len(results) > 0:
+        print(f"\nOpen ports: {results}\n")
+    else:
+        print("\nNo open ports found :(\n")
 
 
 def get_ip():
@@ -49,6 +53,14 @@ def get_ip():
     return target
 
 
+def validate_ip(ip):
+    try:
+        socket.inet_aton(ip)
+        return True
+    except socket.error:
+        return False
+
+
 def get_ports():
     while True:
         ports = input("Target Port Range <port-port>: ")
@@ -56,6 +68,16 @@ def get_ports():
             break
         print("Invalid port range. Please try again.")
     return ports
+
+
+def validate_ports(ports):
+    try:
+        start_port, end_port = map(int, ports.split("-"))
+        return (
+            0 <= start_port < 65536 and 0 <= end_port < 65536 and start_port < end_port
+        )
+    except ValueError:
+        return False
 
 
 def scan(target, ports):
@@ -79,28 +101,6 @@ def scan(target, ports):
         sys.exit()
 
     return open_ports
-
-
-def print_results(results):
-    print("-" * 50)
-    print(f"Scanning Finished: {datetime.now()}")
-    if len(results) > 0:
-        print(f"\nOpen ports: {results}\n")
-    else:
-        print("\nNo open ports found :(\n")
-
-
-def set_logging():
-    parser = argparse.ArgumentParser(description="Port Scanner")
-    parser.add_argument(
-        "-v", "--verbose", action="store_true", help="Increase output verbosity"
-    )
-    args = parser.parse_args()
-
-    if args.verbose:
-        logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
-    else:
-        logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 
 def main():
