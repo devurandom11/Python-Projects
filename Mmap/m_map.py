@@ -5,6 +5,8 @@ from datetime import datetime
 import os
 import logging
 import pyfiglet
+import subprocess
+import platform
 
 
 def clear_screen():
@@ -64,6 +66,14 @@ def validate_ip(ip):
         return False
 
 
+def ping_host(ip):
+    param = "-n" if platform.system().lower() == "windows" else "-c"
+    command = ["ping", param, "1", ip]
+    response = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    return response.returncode == 0
+
+
 def get_ports():
     while True:
         ports = input("Target Port Range <port-port>: ")
@@ -86,6 +96,9 @@ def validate_ports(ports):
 def scan(target, ports):
     open_ports = []
     start_port, end_port = map(int, ports.split("-"))
+    if not ping_host(target):
+        print("\n[!] Host is not responding :/\n")
+        sys.exit()
     try:
         for port in range(start_port, end_port + 1):
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as t_socket:
