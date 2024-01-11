@@ -55,6 +55,9 @@ def get_ip():
 
 def validate_ip(ip):
     try:
+        parts = ip.split(".")
+        if len(parts) != 4:
+            return False
         socket.inet_aton(ip)
         return True
     except socket.error:
