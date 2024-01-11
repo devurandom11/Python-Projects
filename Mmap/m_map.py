@@ -14,7 +14,7 @@ def clear_screen():
 
 
 def set_logging():
-    parser = argparse.ArgumentParser(description="Port Scanner")
+    parser = argparse.ArgumentParser(description="Python Port Scanner - M-Map")
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="Increase output verbosity"
     )
