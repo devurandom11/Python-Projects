@@ -33,13 +33,13 @@ def print_banner():
 
 def print_start(target):
     print(f"\nScanning Target: {target}")
-    print(f"\nScanning Started: {datetime.now()}")
+    print(f"\nScanning Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("-" * 50)
 
 
 def print_results(results):
     print("-" * 50)
-    print(f"Scanning Finished: {datetime.now()}")
+    print(f"Scanning Finished: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     if len(results) > 0:
         print(f"\nOpen ports: {results}\n")
     else:
