@@ -38,7 +38,7 @@ After running the script, follow the on-screen prompts to enter the target IP ad
 ## Example
 
 ```console
-    $ python mmap.py
+    $ python m_map.py
     __   __       __  __
     |  \/  |     |  \/  | __ _ _ __
     | |\/| |_____| |\/| |/ _` | '_ \
