@@ -90,7 +90,7 @@ def print_results(results):
         print("\nNo open ports found :(\n")
 
 
-def main():
+def set_logging():
     parser = argparse.ArgumentParser(description="Port Scanner")
     parser.add_argument(
         "-v", "--verbose", action="store_true", help="Increase output verbosity"
@@ -102,6 +102,9 @@ def main():
     else:
         logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
+
+def main():
+    set_logging()
     clear_screen()
     print_banner()
     target = get_ip()
